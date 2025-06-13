@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional custom styles */
+
+html,
+body {
+  @apply bg-white text-gray-900;
+  font-family: system-ui, sans-serif;
+  scroll-behavior: smooth;
+}
+
+* {
+  @apply box-border;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
