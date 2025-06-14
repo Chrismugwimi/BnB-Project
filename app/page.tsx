@@ -1,16 +1,11 @@
-// app/page.tsx
 import Link from "next/link";
-import { Button } from "@/src/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   Heart,
   Star,
-  MapPin,
   Search,
-  Calendar,
-  Users,
   ChevronLeft,
   ChevronRight,
   Globe,
@@ -40,17 +35,17 @@ export default async function Home() {
   const nakuruProperties = await getAvailableInNakuru();
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-blue-300">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center mr-2">
-                <span className="text-white font-bold text-sm">A</span>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-700 to-blue-500 rounded-lg flex items-center justify-center mr-2">
+                <span className="text-white font-bold text-sm">My</span>
               </div>
-              <span className="text-2xl font-bold text-red-500">anybnb</span>
+              <span className="text-2xl font-bold text-blue-700">BnB</span>
             </Link>
 
             {/* Navigation Tabs */}
@@ -66,24 +61,18 @@ export default async function Home() {
                   <span className="text-xs">🎯</span>
                 </div>
                 <span className="font-medium">Experiences</span>
-                <Badge
+                {/*<Badge
                   variant="secondary"
-                  className="bg-red-100 text-red-800 text-xs"
+                  className="bg-red-100 text-blue-800 text-xs"
                 >
                   NEW
-                </Badge>
+                </Badge>*/}
               </div>
               <div className="flex items-center space-x-2 text-gray-500 hover:text-gray-900 cursor-pointer pb-4">
                 <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center">
                   <span className="text-xs">🍽️</span>
                 </div>
                 <span className="font-medium">Services</span>
-                <Badge
-                  variant="secondary"
-                  className="bg-red-100 text-red-800 text-xs"
-                >
-                  NEW
-                </Badge>
               </div>
             </nav>
 
@@ -156,7 +145,7 @@ export default async function Home() {
 
             {/* Search Button */}
             <div className="px-2">
-              <Button className="w-12 h-12 rounded-full bg-red-500 hover:bg-red-600">
+              <Button className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600">
                 <Search className="w-4 h-4" />
               </Button>
             </div>
@@ -246,7 +235,9 @@ function PropertyCard({ property }: { property: any }) {
       <div className="relative">
         <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3">
           <img
-            src={property.images?.[0] || "/images/placeholder.jpg"}
+            src={
+              property.images?.[0] || "/placeholder.svg?height=240&width=320"
+            }
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           />
@@ -302,9 +293,11 @@ function PlaceholderPropertyCard({ location }: { location: string }) {
     <div className="flex-none w-80 group cursor-pointer">
       <div className="relative">
         <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-gray-100 to-gray-200">
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            Property Image
-          </div>
+          <img
+            src="/placeholder.svg?height=240&width=320"
+            alt={`${randomType} in ${location}`}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Guest favorite badge */}
