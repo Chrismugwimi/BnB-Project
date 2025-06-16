@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Footer } from "@/components/footer";
 import {
   Heart,
   Star,
@@ -224,6 +225,7 @@ export default async function Home() {
               ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

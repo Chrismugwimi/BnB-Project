@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Footer } from "@/components/footer";
 import {
   Heart,
   Share,
@@ -661,6 +662,7 @@ export default function PropertyDetailsPage({
           </Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
