@@ -681,7 +681,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
                         </div>
                         <ul className="space-y-1 text-blue-700">
                           <li>
-                            • You'll be charged immediately upon booking
+                            • You&apos;ll be charged immediately upon booking
                             confirmation
                           </li>
                           <li>
