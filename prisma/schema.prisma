@@ -11,16 +11,22 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  phone         String?
   emailVerified DateTime?
   image         String?
   password      String?
-  role          String      @default(USER)
+  role          Role      @default(GUEST)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  //Relations
   accounts      Account[]
   properties    Property[]
   bookings      Booking[]
   reviews       Review[]
+  messages      Message[]
+
+  @@map("users")
 }
 
 model Account {
@@ -45,51 +51,86 @@ model Property {
   id            String    @id @default(cuid())
   title         String
   description   String    @db.Text
-  price         Float
+  price         Decimal   @db.Decimal(10, 2)
+  currency      String    @default("KES")
   location      String
   county        String
-  imageUrls     String[]
-  bedrooms      Int
-  bathrooms     Int
-  maxGuests     Int
+  images        String[]
+  bedrooms      Int       @db.SmallInt
+  bathrooms     Int       @db.SmallInt
+  city          String
+  maxGuests     Int       @db.SmallInt
+  latitude      Float?
+  longitude     Float?
   amenities     String[]
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  //Relations
   hostId        String
   host          User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
   bookings      Booking[]
   reviews       Review[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+
+  @@map("properties")
 }
 
 model Booking {
   id            String    @id @default(cuid())
-  propertyId    String
-  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  checkInDate   DateTime
-  checkOutDate  DateTime
-  totalPrice    Float
+  checkIn       DateTime
+  checkOut      DateTime
+  guests        Int
+  totalPrice    Decimal   @db.Decimal(10, 2)
+  currency      String    @default("KES")
   status        BookingStatus @default(PENDING)
   paymentId     String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  //Relations
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId        String
+  guest         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages   Message[]
+
+  @@map("bookings")
 }
 
 model Review {
   id          String   @id @default(cuid())
-  propertyId  String
-  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  rating      Int
+  rating      Int      @db.SmallInt
   comment     String?  @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  //Relations
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  reviewerId      String
+  reviewer        User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, reviewerId])
+  @@map("reviews")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  bookingId String
+
+  @@map("messages")
 }
 
 enum Role {
-  USER
+  GUEST
   HOST
   ADMIN
 }
