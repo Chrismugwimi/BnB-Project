@@ -3,6 +3,8 @@
 import type React from "react";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +22,7 @@ export default function SignUpPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,8 +56,8 @@ export default function SignUpPage() {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -71,18 +74,69 @@ export default function SignUpPage() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({}); // Clear any previous errors
 
     try {
-      // TODO: Implement actual signup logic
-      console.log("Sign up data:", formData);
+      // Create user account
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          // Note: phoneNumber is not sent to backend yet - you may want to add this to your User model
+        }),
+      });
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const data = await response.json();
 
-      // Redirect to login or dashboard
-      // router.push('/login')
+      if (!response.ok) {
+        // Handle specific error cases
+        if (data.error === "User with this email already exists") {
+          setErrors({ email: "An account with this email already exists" });
+        } else if (data.details && Array.isArray(data.details)) {
+          // Handle validation errors from backend
+          const backendErrors: Record<string, string> = {};
+          data.details.forEach((error: string) => {
+            if (error.includes("Name")) backendErrors.fullName = error;
+            if (error.includes("email")) backendErrors.email = error;
+            if (error.includes("Password")) backendErrors.password = error;
+          });
+          setErrors(backendErrors);
+        } else {
+          setErrors({ general: data.error || "Failed to create account" });
+        }
+        return;
+      }
+
+      // Account created successfully, now sign the user in automatically
+      const signInResult = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+
+      if (signInResult?.error) {
+        // Account was created but auto-signin failed
+        setErrors({
+          general:
+            "Account created successfully! Please sign in with your credentials.",
+        });
+        // Optionally redirect to login page
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      } else {
+        // Success! Redirect to dashboard
+        router.push("/dashboard");
+        router.refresh();
+      }
     } catch (error) {
       console.error("Sign up error:", error);
+      setErrors({ general: "An unexpected error occurred. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -122,6 +176,13 @@ export default function SignUpPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+          {/* General Error Message */}
+          {errors.general && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">{errors.general}</p>
+            </div>
+          )}
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Full Name */}
             <div>
@@ -142,15 +203,13 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className={`${
                     errors.fullName
-                      ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
                   }`}
                   placeholder="Enter your full name"
                 />
                 {errors.fullName && (
-                  <p className="mt-1 text-sm text-blue-600">
-                    {errors.fullName}
-                  </p>
+                  <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
                 )}
               </div>
             </div>
@@ -174,13 +233,13 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className={`${
                     errors.email
-                      ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
                   }`}
                   placeholder="Enter your email"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-sm text-blue-600">{errors.email}</p>
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
                 )}
               </div>
             </div>
@@ -204,13 +263,13 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className={`${
                     errors.phoneNumber
-                      ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
                   }`}
                   placeholder="+254 7XX XXX XXX or 07XX XXX XXX"
                 />
                 {errors.phoneNumber && (
-                  <p className="mt-1 text-sm text-blue-600">
+                  <p className="mt-1 text-sm text-red-600">
                     {errors.phoneNumber}
                   </p>
                 )}
@@ -236,7 +295,7 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className={`pr-10 ${
                     errors.password
-                      ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
                   }`}
                   placeholder="Create a strong password"
@@ -253,9 +312,7 @@ export default function SignUpPage() {
                   )}
                 </button>
                 {errors.password && (
-                  <p className="mt-1 text-sm text-blue-600">
-                    {errors.password}
-                  </p>
+                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
                 )}
               </div>
             </div>
@@ -279,7 +336,7 @@ export default function SignUpPage() {
                   onChange={handleInputChange}
                   className={`pr-10 ${
                     errors.confirmPassword
-                      ? "border-blue-500 focus:border-blue-500 focus:ring-blue-500"
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : ""
                   }`}
                   placeholder="Confirm your password"
@@ -296,7 +353,7 @@ export default function SignUpPage() {
                   )}
                 </button>
                 {errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-blue-600">
+                  <p className="mt-1 text-sm text-red-600">
                     {errors.confirmPassword}
                   </p>
                 )}
@@ -308,7 +365,7 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Creating Account..." : "Create Account"}
               </Button>

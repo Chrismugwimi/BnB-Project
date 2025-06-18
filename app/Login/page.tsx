@@ -3,6 +3,8 @@
 import type React from "react";
 
 import { useState } from "react";
+import { signIn, getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +19,7 @@ export default function LoginPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,18 +64,38 @@ export default function LoginPage() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({}); // Clear any previous errors
 
     try {
-      // TODO: Implement actual login logic
-      console.log("Login data:", { ...formData, loginMethod });
+      // For phone login, you might want to convert phone to email format
+      // or modify your backend to handle phone numbers
+      const loginEmail =
+        loginMethod === "phone"
+          ? `${formData.emailOrPhone.replace(/\s/g, "")}@phone.kenyabnb.com` // Convert phone to email format
+          : formData.emailOrPhone;
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const result = await signIn("credentials", {
+        email: loginEmail,
+        password: formData.password,
+        redirect: false,
+      });
 
-      // Redirect to dashboard
-      // router.push('/dashboard')
+      if (result?.error) {
+        setErrors({
+          general:
+            loginMethod === "phone"
+              ? "Invalid phone number or password"
+              : "Invalid email or password",
+        });
+      } else {
+        // Get the updated session to ensure user is logged in
+        await getSession();
+        router.push("/dashboard");
+        router.refresh();
+      }
     } catch (error) {
       console.error("Login error:", error);
+      setErrors({ general: "An unexpected error occurred. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +141,13 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl border border-blue-100 sm:rounded-2xl sm:px-10">
+          {/* General Error Message */}
+          {errors.general && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-sm text-red-600">{errors.general}</p>
+            </div>
+          )}
+
           {/* Login Method Toggle */}
           <div className="mb-6">
             <div className="flex rounded-xl bg-blue-50 p-1 border border-blue-100">
@@ -239,7 +269,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                className="w-full h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isLoading ? (
                   <div className="flex items-center">
@@ -282,6 +312,7 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
                 className="h-12 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 rounded-xl transition-all duration-200"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -307,6 +338,9 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
+                onClick={() =>
+                  signIn("facebook", { callbackUrl: "/dashboard" })
+                }
                 className="h-12 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 rounded-xl transition-all duration-200"
               >
                 <svg
