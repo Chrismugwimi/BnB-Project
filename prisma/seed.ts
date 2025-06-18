@@ -1,4 +1,5 @@
 import { PrismaClient, Role } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -19,12 +20,14 @@ async function main() {
   console.log("🌱 Starting database seeding...");
 
   // Create sample users
+  const password = await bcrypt.hash("test1234", 10);
   const host = await prisma.user.create({
     data: {
       email: "host@example.com",
       name: "John Kamau",
       role: Role.HOST,
       phone: "+254700000000",
+      password,
     },
   });
 
@@ -34,6 +37,7 @@ async function main() {
       name: "Mary Wanjiku",
       role: Role.GUEST,
       phone: "+254700000001",
+      password,
     },
   });
 
@@ -70,14 +74,14 @@ async function main() {
     checkIn.setDate(checkIn.getDate() + 7); // 7 days from now
 
     const checkOut = new Date(checkIn);
-    checkOut.setDate(checkOut.getDate() + 3); // 3 day stay
+    checkOut.setDate(checkOut.getDate() + 3); // 3-day stay
 
     createdBooking = await prisma.booking.create({
       data: {
         checkIn,
         checkOut,
         guests: 2,
-        totalPrice: property.price.toNumber() * 3, // 3 nights
+        totalPrice: property.price.toNumber() * 3,
         propertyId: property.id,
         userId: guest.id,
       },
@@ -86,14 +90,13 @@ async function main() {
     console.log("✅ Created sample booking", createdBooking);
   }
 
-  // Get all existing bookings
+  // Create a payment for each booking
   const bookings = await prisma.booking.findMany();
 
-  // Create a payment for each booking
   for (const booking of bookings) {
     await prisma.payment.create({
       data: {
-        amount: 5000 + Math.floor(Math.random() * 5000), // Random amount between 5000–10000
+        amount: 5000 + Math.floor(Math.random() * 5000), // Random 5k–10k
         method: ["Mpesa", "Card", "Cash"][Math.floor(Math.random() * 3)],
         status: "Paid",
         bookingId: booking.id,
@@ -103,7 +106,7 @@ async function main() {
 
   console.log(`✅ Seeded ${bookings.length} payments`);
 
-  // Create a sample review
+  // Create a review
   if (property && guest) {
     await prisma.review.create({
       data: {
@@ -122,7 +125,7 @@ async function main() {
   console.log(`
 📊 Summary:
 - 1 Host user (host@example.com)
-- 1 Guest user (guest@example.com)  
+- 1 Guest user (guest@example.com)
 - 5 Properties across Kenya counties
 - ${bookings.length} Booking(s)
 - ${bookings.length} Payment(s)
@@ -130,11 +133,13 @@ async function main() {
 `);
 }
 
-main()
-  .catch((e) => {
-    console.error("❌ Error during seeding:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+(async () => {
+  await main()
+    .catch((e) => {
+      console.error("❌ Error during seeding:", e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+})();

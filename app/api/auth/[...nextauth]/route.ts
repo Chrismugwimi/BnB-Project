@@ -22,17 +22,28 @@ export const authOptions = {
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email: credentials.email },
         });
 
         if (!user || !user.password) return null;
 
-        const passwordMatch = await bcrypt.compare(
-          credentials.password as string,
+        const isValid = await bcrypt.compare(
+          credentials.password,
           user.password
         );
 
-        return passwordMatch ? user : null;
+        console.log("Attempted login:", credentials.email);
+        console.log("Found user:", user.email);
+        console.log("Password valid:", isValid);
+
+        if (!isValid) return null;
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
@@ -49,7 +60,7 @@ export const authOptions = {
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token.sub && session.user) {
-        session.user.id = token.sub;
+        session.user.id = token.id as string;
         session.user.role = token.role as string;
       }
       return session;
