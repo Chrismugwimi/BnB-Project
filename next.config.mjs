@@ -1,5 +1,7 @@
+import nextPwa from "next-pwa";
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const baseConfig = {
   reactStrictMode: true,
 
   images: {
@@ -7,16 +9,23 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  // Let Next.js handle Turbopack automatically
   experimental: {
-    // Add any experimental features you need
+    // You can enable experimental features if needed
   },
+
   eslint: {
     ignoreDuringBuilds: true,
   },
+
   typescript: {
     ignoreBuildErrors: true,
   },
 };
+
+const nextConfig = nextPwa({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+})(baseConfig);
 
 export default nextConfig;

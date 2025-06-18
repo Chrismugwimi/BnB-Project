@@ -1,10 +1,10 @@
 // app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
-import { Session } from "next-auth";
+import type { Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -18,32 +18,21 @@ export const authOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(
-        credentials: Partial<Record<"email" | "password", unknown>>,
-        req: Request
-      ): Promise<User | null> {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
-
-        const email = credentials.email as string;
-        const password = credentials.password as string;
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
-          where: { email },
+          where: { email: credentials.email as string },
         });
 
-        if (!user || !user.password) {
-          return null;
-        }
+        if (!user || !user.password) return null;
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const passwordMatch = await bcrypt.compare(
+          credentials.password as string,
+          user.password
+        );
 
-        if (!passwordMatch) {
-          return null;
-        }
-
-        return user;
+        return passwordMatch ? user : null;
       },
     }),
   ],
@@ -51,18 +40,17 @@ export const authOptions = {
     strategy: "jwt" as const,
   },
   callbacks: {
-    async session({ session, token }: { session: Session; token: any }) {
+    async jwt({ token, user }: { token: JWT; user?: User }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
-
-        const user = await prisma.user.findUnique({
-          where: { id: token.sub },
-          select: { role: true },
-        });
-
-        if (user) {
-          session.user.role = user.role;
-        }
+        session.user.role = token.role as string;
       }
       return session;
     },
