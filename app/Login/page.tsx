@@ -113,28 +113,26 @@ export default function LoginPage() {
         {/* Back to home */}
         <Link
           href="/"
-          className="flex items-center text-gray-600 hover:text-blue-600 mb-8 transition-colors"
+          className="inline-flex items-center px-4 py-2 mb-8 text-sm font-medium text-white bg-blue-600 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200 ease-in-out group"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to KenyaBnB
+          <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:-translate-x-1" />
+          Back
         </Link>
-
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <Link href="/" className="flex items-center">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-              <span className="text-white font-bold text-xl">K</span>
+              <span className="text-white font-bold text-xl">M</span>
             </div>
             <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-              KenyaBnB
+              My BnB
             </span>
           </Link>
         </div>
-
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Welcome,</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to your account to continue your journey
+            sign in to your account to continue your journey
           </p>
         </div>
       </div>
@@ -363,13 +361,13 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-white text-gray-500 font-medium">
-                  New to KenyaBnB?
+                  New to My BnB?
                 </span>
               </div>
             </div>
 
             <div className="mt-6">
-              <Link href="/signup">
+              <Link href="/Signup">
                 <Button
                   variant="outline"
                   className="w-full h-12 border-2 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 font-semibold rounded-xl transition-all duration-200"

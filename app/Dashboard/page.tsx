@@ -12,8 +12,8 @@ export default async function DashboardRedirect() {
   }
 
   if (session.user.role === "HOST") {
-    return redirect("/dashboard/host");
+    return redirect("/Dashboard/host");
   }
 
-  return redirect("/dashboard/guest");
+  return redirect("/Dashboard/guest");
 }
