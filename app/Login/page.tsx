@@ -90,7 +90,7 @@ export default function LoginPage() {
       } else {
         // Get the updated session to ensure user is logged in
         await getSession();
-        router.push("/dashboard");
+        router.push("/Dashboard");
         router.refresh();
       }
     } catch (error) {
@@ -312,7 +312,7 @@ export default function LoginPage() {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                onClick={() => signIn("google", { callbackUrl: "/Dashboard" })}
                 className="h-12 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 rounded-xl transition-all duration-200"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -339,7 +339,7 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  signIn("facebook", { callbackUrl: "/dashboard" })
+                  signIn("facebook", { callbackUrl: "/Dashboard" })
                 }
                 className="h-12 border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 rounded-xl transition-all duration-200"
               >

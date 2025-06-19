@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -46,10 +46,10 @@ export default function SignUpPage() {
       newErrors.email = "Please enter a valid email";
     }
 
-    if (!formData.phoneNumber.trim()) {
+    if (!formData.phone.trim()) {
       newErrors.phoneNumber = "Phone number is required";
     } else if (
-      !/^(\+254|0)[17]\d{8}$/.test(formData.phoneNumber.replace(/\s/g, ""))
+      !/^(\+254|0)[17]\d{8}$/.test(formData.phone.replace(/\s/g, ""))
     ) {
       newErrors.phoneNumber = "Please enter a valid Kenyan phone number";
     }
@@ -86,6 +86,7 @@ export default function SignUpPage() {
         body: JSON.stringify({
           name: formData.fullName,
           email: formData.email,
+          phone: formData.phone,
           password: formData.password,
           // Note: phoneNumber is not sent to backend yet - you may want to add this to your User model
         }),
@@ -127,11 +128,11 @@ export default function SignUpPage() {
         });
         // Optionally redirect to login page
         setTimeout(() => {
-          router.push("/login");
+          router.push("/Login");
         }, 2000);
       } else {
         // Success! Redirect to dashboard
-        router.push("/dashboard");
+        router.push("/Dashboard");
         router.refresh();
       }
     } catch (error) {
@@ -247,19 +248,19 @@ export default function SignUpPage() {
             {/* Phone Number */}
             <div>
               <label
-                htmlFor="phoneNumber"
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-700"
               >
                 Phone Number
               </label>
               <div className="mt-1">
                 <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
+                  id="phone"
+                  name="phone"
                   type="tel"
                   autoComplete="tel"
                   required
-                  value={formData.phoneNumber}
+                  value={formData.phone}
                   onChange={handleInputChange}
                   className={`${
                     errors.phoneNumber
@@ -268,10 +269,8 @@ export default function SignUpPage() {
                   }`}
                   placeholder="+254 7XX XXX XXX or 07XX XXX XXX"
                 />
-                {errors.phoneNumber && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.phoneNumber}
-                  </p>
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
                 )}
               </div>
             </div>

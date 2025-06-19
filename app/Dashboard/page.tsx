@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      router.push("/Login");
     }
   }, [status, router]);
 
@@ -88,7 +88,7 @@ export default function Dashboard() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                onClick={() => signOut({ callbackUrl: "/Login" })}
                 className="flex items-center space-x-2"
               >
                 <LogOut className="w-4 h-4" />
@@ -103,7 +103,7 @@ export default function Dashboard() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {session.user?.name?.split(" ")[0] || "User"}!
+            Welcome, {session.user?.name?.split(" ")[0] || "User"}!
           </h1>
           <p className="text-gray-600">
             Manage your bookings, favorites, and account settings.
