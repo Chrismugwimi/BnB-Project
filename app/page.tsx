@@ -23,23 +23,11 @@ import {
   Briefcase,
 } from "lucide-react";
 
-// You'll replace this with your actual data fetching
-async function getFeaturedProperties() {
-  return [];
-}
-
-async function getPopularInMombasa() {
-  return [];
-}
-
-async function getAvailableInNakuru() {
-  return [];
-}
-
 export default async function Page() {
-  const featuredProperties = await getFeaturedProperties();
-  const mombasaProperties = await getPopularInMombasa();
-  const nakuruProperties = await getAvailableInNakuru();
+  // You'll replace these with your actual data fetching
+  const featuredProperties = [];
+  const mombasaProperties = [];
+  const nakuruProperties = [];
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -49,11 +37,11 @@ export default async function Page() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center group">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mr-3 group-hover:bg-blue-700 transition-colors">
+              <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
                 <Home className="w-5 h-5 text-white" />
               </div>
               <span className="text-2xl font-bold text-gray-900">
-                Haven<span className="text-blue-600">Stay</span>
+                My<span className="text-orange-500"> Bnb</span>
               </span>
             </Link>
 
@@ -61,7 +49,7 @@ export default async function Page() {
             <nav className="hidden md:flex items-center space-x-8">
               <Link
                 href="/"
-                className="flex items-center space-x-2 text-gray-900 font-medium border-b-2 border-blue-600 pb-1"
+                className="flex items-center space-x-2 text-gray-900 font-medium border-b-2 border-orange-500 pb-1"
               >
                 <Home className="w-4 h-4" />
                 <span>Stays</span>
@@ -88,7 +76,7 @@ export default async function Page() {
                 href="/host"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block transition-colors"
               >
-                Become a host
+                List my Bnb
               </Link>
               <Button variant="ghost" size="sm" className="p-2">
                 <Globe className="w-4 h-4" />
@@ -97,7 +85,7 @@ export default async function Page() {
                 <Button variant="ghost" size="sm" className="p-2">
                   <Menu className="w-4 h-4" />
                 </Button>
-                <div className="w-8 h-8 bg-blue-600 rounded-full"></div>
+                <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
               </div>
             </div>
           </div>
@@ -109,17 +97,17 @@ export default async function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center space-y-12">
             <div className="space-y-6">
-              <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2 text-sm font-medium">
-                Trusted by 50,000+ travelers
+              <Badge className="bg-orange-50 text-orange-700 border border-orange-200 px-4 py-2 text-sm font-medium">
+                Trusted by 1000+ travelers
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl mx-auto">
-                Find your perfect
-                <span className="text-blue-600"> home away from home</span>
+                Find your perfect Bnb
+                <span className="text-orange-500"> anywhere, anytime.</span>
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Discover unique accommodations and create unforgettable
-                memories. From city apartments to countryside retreats, we have
-                the perfect stay for every journey.
+                At My Bnb, we are focused on providing quality Bnb accomodation
+                to our customers. We have Bnbs in various towns and we can make
+                suggestions on the best Bnbs to book.
               </p>
             </div>
 
@@ -131,8 +119,8 @@ export default async function Page() {
                     {/* Where */}
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <MapPin className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                          <MapPin className="w-5 h-5 text-orange-500" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -149,8 +137,8 @@ export default async function Page() {
                     {/* Check in */}
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <Calendar className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                          <Calendar className="w-5 h-5 text-orange-500" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -166,8 +154,8 @@ export default async function Page() {
                     {/* Check out */}
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <Calendar className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                          <Calendar className="w-5 h-5 text-orange-500" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -183,8 +171,8 @@ export default async function Page() {
                     {/* Who */}
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <Users className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                          <Users className="w-5 h-5 text-orange-500" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -199,7 +187,7 @@ export default async function Page() {
 
                     {/* Search Button */}
                     <div className="p-4">
-                      <Button className="w-16 h-16 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-lg">
+                      <Button className="w-16 h-16 rounded-xl bg-orange-500 hover:bg-orange-600 shadow-lg">
                         <Search className="w-6 h-6" />
                       </Button>
                     </div>
@@ -211,14 +199,14 @@ export default async function Page() {
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-12 pt-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-gray-900">25,000+</div>
+                <div className="text-3xl font-bold text-gray-900">500+</div>
                 <div className="text-sm text-gray-600 font-medium">
                   Properties
                 </div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-gray-900">100+</div>
-                <div className="text-sm text-gray-600 font-medium">Cities</div>
+                <div className="text-sm text-gray-600 font-medium">Towns</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-gray-900">4.8★</div>
@@ -240,49 +228,49 @@ export default async function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why travelers choose HavenStay
+              Why travelers choose My Bnb
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're committed to providing exceptional experiences with every
-              booking.
+              We&apos;re committed to providing exceptional experiences with
+              every booking.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="border-0 shadow-lg bg-white group hover:shadow-xl transition-all">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                  <Shield className="w-8 h-8 text-blue-600 group-hover:text-white" />
+                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                  <Shield className="w-8 h-8 text-orange-500 group-hover:text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Verified Properties
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Every property is personally inspected and verified by our
-                  team to ensure quality and safety standards.
+                  Every property is well inspected and verified by our team to
+                  ensure quality and safety standards.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-lg bg-white group hover:shadow-xl transition-all">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                  <Award className="w-8 h-8 text-blue-600 group-hover:text-white" />
+                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                  <Award className="w-8 h-8 text-orange-500 group-hover:text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Best Price Guarantee
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Find the same property for less elsewhere? We'll match the
-                  price and give you an additional 5% off.
+                  Find the same property for less elsewhere? We&apos;ll match
+                  the price and give you an additional 5% off.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-0 shadow-lg bg-white group hover:shadow-xl transition-all">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                  <Zap className="w-8 h-8 text-blue-600 group-hover:text-white" />
+                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                  <Zap className="w-8 h-8 text-orange-500 group-hover:text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Instant Confirmation
@@ -311,7 +299,7 @@ export default async function Page() {
             </div>
             <Button
               variant="outline"
-              className="group border-gray-300 hover:border-blue-600 hover:text-blue-600"
+              className="group border-gray-300 hover:border-orange-500 hover:text-orange-500"
             >
               View all properties
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -320,8 +308,8 @@ export default async function Page() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {mombasaProperties.length > 0
-              ? mombasaProperties.map((property: any) => (
-                  <PropertyCard key={property.id} property={property} />
+              ? mombasaProperties.map((property, i) => (
+                  <PropertyCard key={i} property={property} />
                 ))
               : Array.from({ length: 4 }, (_, i) => (
                   <EnhancedPropertyCard key={i} location="Mombasa" />
@@ -344,7 +332,7 @@ export default async function Page() {
             </div>
             <Button
               variant="outline"
-              className="group border-gray-300 hover:border-blue-600 hover:text-blue-600"
+              className="group border-gray-300 hover:border-orange-500 hover:text-orange-500"
             >
               View all properties
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -353,8 +341,8 @@ export default async function Page() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {nakuruProperties.length > 0
-              ? nakuruProperties.map((property: any) => (
-                  <PropertyCard key={property.id} property={property} />
+              ? nakuruProperties.map((property, i) => (
+                  <PropertyCard key={i} property={property} />
                 ))
               : Array.from({ length: 4 }, (_, i) => (
                   <EnhancedPropertyCard key={i} location="Nakuru" />
@@ -364,15 +352,15 @@ export default async function Page() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-blue-600">
+      <section className="py-24 bg-orange-500">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold text-white">
                 Start your next adventure
               </h2>
-              <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                Join millions of travelers who trust HavenStay for their perfect
+              <p className="text-xl text-orange-100 max-w-2xl mx-auto">
+                Join millions of travelers who trust My Bnb for their perfect
                 accommodations.
               </p>
             </div>
@@ -380,7 +368,7 @@ export default async function Page() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-50 font-semibold px-8 py-4 text-lg"
+                className="bg-white text-orange-500 hover:bg-gray-50 font-semibold px-8 py-4 text-lg"
               >
                 Explore Properties
               </Button>
@@ -402,7 +390,7 @@ export default async function Page() {
 }
 
 // Enhanced Property Card Component
-function EnhancedPropertyCard({ location }: { location: string }) {
+function EnhancedPropertyCard({ location }) {
   const types = [
     "Modern Apartment",
     "Luxury Villa",
@@ -426,7 +414,7 @@ function EnhancedPropertyCard({ location }: { location: string }) {
   const randomFeature = features[Math.floor(Math.random() * features.length)];
 
   return (
-    <Card className="group cursor-pointer border border-gray-200 hover:border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
+    <Card className="group cursor-pointer border border-gray-200 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
       <div className="relative">
         <div className="aspect-[4/3] overflow-hidden">
           <img
@@ -456,7 +444,7 @@ function EnhancedPropertyCard({ location }: { location: string }) {
         <div className="absolute bottom-4 left-4">
           <Badge
             variant="secondary"
-            className="bg-blue-600 text-white border-0 font-medium"
+            className="bg-orange-500 text-white border-0 font-medium"
           >
             {randomFeature}
           </Badge>
@@ -466,7 +454,7 @@ function EnhancedPropertyCard({ location }: { location: string }) {
       <CardContent className="p-5 space-y-3">
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1">
-            <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
+            <h3 className="font-semibold text-gray-900 group-hover:text-orange-500 transition-colors leading-tight">
               {randomType}
             </h3>
             <p className="text-sm text-gray-600 flex items-center">
@@ -491,7 +479,7 @@ function EnhancedPropertyCard({ location }: { location: string }) {
           </div>
           <Button
             size="sm"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-orange-500 hover:bg-orange-600 text-white"
           >
             View Details
           </Button>
@@ -502,9 +490,9 @@ function EnhancedPropertyCard({ location }: { location: string }) {
 }
 
 // Original Property Card Component (for when you have real data)
-function PropertyCard({ property }: { property: any }) {
+function PropertyCard({ property }) {
   return (
-    <Card className="group cursor-pointer border border-gray-200 hover:border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
+    <Card className="group cursor-pointer border border-gray-200 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
       <div className="relative">
         <div className="aspect-[4/3] overflow-hidden">
           <img
@@ -534,7 +522,7 @@ function PropertyCard({ property }: { property: any }) {
       <CardContent className="p-5 space-y-3">
         <div className="flex items-start justify-between">
           <div className="space-y-1 flex-1">
-            <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
+            <h3 className="font-semibold text-gray-900 group-hover:text-orange-500 transition-colors leading-tight">
               {property.title || `${property.type} in ${property.location}`}
             </h3>
             <p className="text-sm text-gray-600 flex items-center">
@@ -559,7 +547,7 @@ function PropertyCard({ property }: { property: any }) {
           </div>
           <Button
             size="sm"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-orange-500 hover:bg-orange-600 text-white"
           >
             View Details
           </Button>

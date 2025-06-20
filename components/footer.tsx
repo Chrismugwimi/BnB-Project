@@ -22,15 +22,15 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mr-3">
                 <span className="text-white font-bold text-lg">K</span>
               </div>
-              <span className="text-2xl font-bold text-white">KenyaBnB</span>
+              <span className="text-2xl font-bold text-white">My BnB</span>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Discover and book unique accommodations across Kenya. From the
-              bustling streets of Nairobi to the pristine beaches of the coast,
-              find your perfect stay.
+              Discover and book unique Bnbs across Kenya. From the bustling
+              streets of Nairobi to the pristine beaches of the coast, find your
+              perfect stay.
             </p>
             <div className="flex space-x-4">
               <Link
