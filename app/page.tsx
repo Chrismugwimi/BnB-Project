@@ -32,7 +32,7 @@ export default async function Page() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b border-gray-100 bg-white sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-gray-100 bg-blue-950 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -40,7 +40,7 @@ export default async function Page() {
               <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
                 <Home className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">
+              <span className="text-2xl font-bold text-white">
                 My<span className="text-orange-500"> Bnb</span>
               </span>
             </Link>
@@ -49,37 +49,37 @@ export default async function Page() {
             <nav className="hidden md:flex items-center space-x-8">
               <Link
                 href="/"
-                className="flex items-center space-x-2 text-gray-900 font-medium border-b-2 border-orange-500 pb-1"
+                className="flex items-center space-x-2 text-white font-medium border-b-2 border-orange-500 pb-1"
               >
                 <Home className="w-4 h-4" />
-                <span>Stays</span>
+                <span>Bnbs</span>
               </Link>
               <Link
                 href="/experiences"
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center space-x-2 text-white hover:text-orange-500 transition-colors"
               >
                 <Compass className="w-4 h-4" />
-                <span>Experiences</span>
+                <span>Destinations</span>
               </Link>
               <Link
                 href="/business"
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center space-x-2 text-white hover:text-orange-500 transition-colors"
               >
                 <Briefcase className="w-4 h-4" />
-                <span>Business</span>
+                <span>Activities</span>
               </Link>
             </nav>
 
             {/* Right Menu */}
             <div className="flex items-center space-x-4">
               <Link
-                href="/host"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block transition-colors"
+                href="/list"
+                className="text-sm font-medium text-white hover:text-orange-500 hidden sm:block transition-colors"
               >
                 List my Bnb
               </Link>
               <Button variant="ghost" size="sm" className="p-2">
-                <Globe className="w-4 h-4" />
+                <Globe className="text-white w-4 h-4" />
               </Button>
               <div className="flex items-center space-x-0 border border-gray-200 rounded-full p-1 hover:shadow-md transition-shadow bg-white">
                 <Button variant="ghost" size="sm" className="p-2">
@@ -96,24 +96,9 @@ export default async function Page() {
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center space-y-12">
-            <div className="space-y-6">
-              <Badge className="bg-orange-50 text-orange-700 border border-orange-200 px-4 py-2 text-sm font-medium">
-                Trusted by 1000+ travelers
-              </Badge>
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl mx-auto">
-                Find your perfect Bnb
-                <span className="text-orange-500"> anywhere, anytime.</span>
-              </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                At My Bnb, we are focused on providing quality Bnb accomodation
-                to our customers. We have Bnbs in various towns and we can make
-                suggestions on the best Bnbs to book.
-              </p>
-            </div>
-
             {/* Enhanced Search Bar */}
             <div className="max-w-5xl mx-auto">
-              <Card className="border border-gray-200 shadow-xl bg-white">
+              <Card className="border border-gray-200 shadow-xl bg-gray-200">
                 <CardContent className="p-3">
                   <div className="flex flex-col lg:flex-row items-center divide-y lg:divide-y-0 lg:divide-x divide-gray-200">
                     {/* Where */}
@@ -124,10 +109,10 @@ export default async function Page() {
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
-                            Where
+                            Search
                           </label>
                           <Input
-                            placeholder="Search destinations"
+                            placeholder="Search Bnbs or destinations"
                             className="border-none p-0 text-base placeholder-gray-500 focus:ring-0 bg-transparent"
                           />
                         </div>
@@ -138,7 +123,7 @@ export default async function Page() {
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
                         <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                          <Calendar className="w-5 h-5 text-orange-500" />
+                          <Calendar className="w-5 h-5 text-blue-950" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -172,7 +157,7 @@ export default async function Page() {
                     <div className="flex-1 p-6 w-full">
                       <div className="flex items-center space-x-4">
                         <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                          <Users className="w-5 h-5 text-orange-500" />
+                          <Users className="w-5 h-5 text-blue-950" />
                         </div>
                         <div className="flex-1">
                           <label className="block text-sm font-semibold text-gray-900 mb-1">
@@ -194,6 +179,21 @@ export default async function Page() {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="space-y-6">
+              <Badge className="bg-orange-50 text-orange-700 border border-orange-200 px-4 py-2 text-sm font-medium">
+                Trusted by 1000+ travelers
+              </Badge>
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl mx-auto">
+                Find your perfect Bnb
+                <span className="text-orange-500"> anywhere, anytime.</span>
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                At My Bnb, we are focused on providing quality Bnb accomodation
+                to our customers. We have Bnbs in various towns and we can make
+                suggestions on the best Bnbs to book.
+              </p>
             </div>
 
             {/* Trust Indicators */}
@@ -224,7 +224,7 @@ export default async function Page() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -332,7 +332,7 @@ export default async function Page() {
             </div>
             <Button
               variant="outline"
-              className="group border-gray-300 hover:border-orange-500 hover:text-orange-500"
+              className="group border-blue-950 text-white hover:border-orange-500 hover:text-orange-500"
             >
               View all properties
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
