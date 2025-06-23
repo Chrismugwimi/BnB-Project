@@ -1,8 +1,9 @@
-import Link from "next/link";
+// Updated page component with proper TypeScript types
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Header } from "@/components/Header/page";
 import { Footer } from "@/components/footer";
 import {
   Heart,
@@ -14,83 +15,35 @@ import {
   Shield,
   Award,
   Zap,
-  Globe,
-  Menu,
   ChevronRight,
   Play,
-  Home,
-  Compass,
-  Briefcase,
 } from "lucide-react";
 
+// Define the Property interface
+interface Property {
+  id: string;
+  title: string;
+  type: string;
+  location: string;
+  price: number;
+  rating: number;
+  images: string[];
+  features?: string[];
+  description?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  maxGuests?: number;
+}
+
 export default async function Page() {
-  // You'll replace these with your actual data fetching
-  const featuredProperties = [];
-  const mombasaProperties = [];
-  const nakuruProperties = [];
+  // Explicitly type the arrays
+  const featuredProperties: Property[] = [];
+  const mombasaProperties: Property[] = [];
+  const nakuruProperties: Property[] = [];
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-blue-950 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center group">
-              <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
-                <Home className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">
-                My<span className="text-orange-500"> Bnb</span>
-              </span>
-            </Link>
-
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link
-                href="/"
-                className="flex items-center space-x-2 text-white font-medium border-b-2 border-orange-500 pb-1"
-              >
-                <Home className="w-4 h-4" />
-                <span>Bnbs</span>
-              </Link>
-              <Link
-                href="/experiences"
-                className="flex items-center space-x-2 text-white hover:text-orange-500 transition-colors"
-              >
-                <Compass className="w-4 h-4" />
-                <span>Destinations</span>
-              </Link>
-              <Link
-                href="/business"
-                className="flex items-center space-x-2 text-white hover:text-orange-500 transition-colors"
-              >
-                <Briefcase className="w-4 h-4" />
-                <span>Activities</span>
-              </Link>
-            </nav>
-
-            {/* Right Menu */}
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/list"
-                className="text-sm font-medium text-white hover:text-orange-500 hidden sm:block transition-colors"
-              >
-                List my Bnb
-              </Link>
-              <Button variant="ghost" size="sm" className="p-2">
-                <Globe className="text-white w-4 h-4" />
-              </Button>
-              <div className="flex items-center space-x-0 border border-gray-200 rounded-full p-1 hover:shadow-md transition-shadow bg-white">
-                <Button variant="ghost" size="sm" className="p-2">
-                  <Menu className="w-4 h-4" />
-                </Button>
-                <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="bg-white">
@@ -389,17 +342,21 @@ export default async function Page() {
   );
 }
 
-// Enhanced Property Card Component
-function EnhancedPropertyCard({ location }) {
-  const types = [
+// Enhanced Property Card Component with proper TypeScript types
+interface EnhancedPropertyCardProps {
+  location: string;
+}
+
+function EnhancedPropertyCard({ location }: EnhancedPropertyCardProps) {
+  const types: string[] = [
     "Modern Apartment",
     "Luxury Villa",
     "Cozy Cottage",
     "Beachfront House",
   ];
-  const prices = [8500, 12000, 6500, 15000, 4500, 18000];
-  const ratings = [4.9, 4.8, 4.95, 4.85, 4.92, 4.88];
-  const features = [
+  const prices: number[] = [8500, 12000, 6500, 15000, 4500, 18000];
+  const ratings: number[] = [4.9, 4.8, 4.95, 4.85, 4.92, 4.88];
+  const features: string[] = [
     "Ocean View",
     "Pool",
     "WiFi",
@@ -408,10 +365,12 @@ function EnhancedPropertyCard({ location }) {
     "Garden",
   ];
 
-  const randomType = types[Math.floor(Math.random() * types.length)];
-  const randomPrice = prices[Math.floor(Math.random() * prices.length)];
-  const randomRating = ratings[Math.floor(Math.random() * ratings.length)];
-  const randomFeature = features[Math.floor(Math.random() * features.length)];
+  const randomType: string = types[Math.floor(Math.random() * types.length)];
+  const randomPrice: number = prices[Math.floor(Math.random() * prices.length)];
+  const randomRating: number =
+    ratings[Math.floor(Math.random() * ratings.length)];
+  const randomFeature: string =
+    features[Math.floor(Math.random() * features.length)];
 
   return (
     <Card className="group cursor-pointer border border-gray-200 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
@@ -489,8 +448,12 @@ function EnhancedPropertyCard({ location }) {
   );
 }
 
-// Original Property Card Component (for when you have real data)
-function PropertyCard({ property }) {
+// Original Property Card Component with proper TypeScript types
+interface PropertyCardProps {
+  property: Property;
+}
+
+function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Card className="group cursor-pointer border border-gray-200 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
       <div className="relative">
