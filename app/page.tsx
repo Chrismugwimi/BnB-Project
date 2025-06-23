@@ -305,14 +305,14 @@ export default async function Page() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-orange-500">
+      <section className="py-24 bg-gray-400">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold text-white">
+              <h2 className="text-4xl md:text-5xl font-bold text-blue-900">
                 Start your next adventure
               </h2>
-              <p className="text-xl text-orange-100 max-w-2xl mx-auto">
+              <p className="text-xl text-black max-w-2xl mx-auto">
                 Join millions of travelers who trust My Bnb for their perfect
                 accommodations.
               </p>
@@ -321,14 +321,14 @@ export default async function Page() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-white text-orange-500 hover:bg-gray-50 font-semibold px-8 py-4 text-lg"
+                className="bg-white hover:bg-orange-500 hover:text-white text-orange-500 font-semibold px-8 py-4 text-lg"
               >
                 Explore Properties
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white/10 font-semibold px-8 py-4 text-lg"
+                className="border-white bg-orange-500 text-white hover:bg-white hover:text-orange-500 font-semibold px-8 py-4 text-lg"
               >
                 <Play className="w-5 h-5 mr-2" />
                 How it works
@@ -438,7 +438,7 @@ function EnhancedPropertyCard({ location }: EnhancedPropertyCardProps) {
           </div>
           <Button
             size="sm"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
+            className="bg-blue-900 hover:bg-blue-800 text-white"
           >
             View Details
           </Button>
