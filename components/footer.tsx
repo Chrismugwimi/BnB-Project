@@ -240,7 +240,7 @@ export function Footer() {
             <div className="flex items-center space-x-4 text-sm text-gray-400">
               <span>© 2024 KenyaBnB. All rights reserved.</span>
               <div className="flex items-center space-x-1">
-                <span>Made with</span>
+                <span>Made by Chris</span>
                 <Heart className="w-4 h-4 text-blue-500 fill-current" />
                 <span>in Kenya</span>
               </div>
