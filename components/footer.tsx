@@ -6,6 +6,7 @@ import {
   Twitter,
   Instagram,
   Youtube,
+  Home,
   Mail,
   Phone,
   MapPin,
@@ -21,11 +22,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-lg">K</span>
+            {/* Logo */}
+            <Link href="/" className="flex items-center group">
+              <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
+                <Home className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-bold text-white">My BnB</span>
+              <span className="text-2xl font-bold text-white">
+                My<span className="text-orange-500"> Bnb</span>
+              </span>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed">
               Discover and book unique Bnbs across Kenya. From the bustling
