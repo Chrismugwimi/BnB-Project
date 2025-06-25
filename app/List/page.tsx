@@ -1,4 +1,6 @@
+"use client";
 import React, { useState } from "react";
+import { LucideProps } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -27,8 +29,51 @@ import {
   Check,
 } from "lucide-react";
 
+interface PropertyType {
+  value: string;
+  label: string;
+  icon: React.ComponentType<LucideProps>;
+}
+
+interface Amenity {
+  id: string;
+  label: string;
+  icon: React.ComponentType<LucideProps>;
+}
+
+interface FormData {
+  title: string;
+  description: string;
+  propertyType: string;
+  location: string;
+  bedrooms: number;
+  bathrooms: number;
+  maxGuests: number;
+  pricePerNight: string;
+  weeklyDiscount: number;
+  monthlyDiscount: number;
+  cleaningFee: string;
+  amenities: string[];
+  houseRules: string;
+  checkInTime: string;
+  checkOutTime: string;
+  images: File[];
+}
+
+interface PropertyTypeCardProps {
+  type: PropertyType;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+interface AmenityCardProps {
+  amenity: Amenity;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
 const HostListingPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
     propertyType: "",
@@ -50,14 +95,14 @@ const HostListingPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
 
-  const propertyTypes = [
+  const propertyTypes: PropertyType[] = [
     { value: "apartment", label: "Apartment", icon: Home },
     { value: "house", label: "House", icon: Home },
     { value: "villa", label: "Villa", icon: Home },
     { value: "cottage", label: "Cottage", icon: TreePine },
   ];
 
-  const amenitiesList = [
+  const amenitiesList: Amenity[] = [
     { id: "wifi", label: "WiFi", icon: Wifi },
     { id: "parking", label: "Free Parking", icon: Car },
     { id: "kitchen", label: "Kitchen", icon: Utensils },
@@ -68,14 +113,17 @@ const HostListingPage = () => {
     { id: "workspace", label: "Dedicated Workspace", icon: Users },
   ];
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = <K extends keyof FormData>(
+    field: K,
+    value: FormData[K]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleAmenityToggle = (amenityId) => {
+  const handleAmenityToggle = (amenityId: string) => {
     setFormData((prev) => ({
       ...prev,
       amenities: prev.amenities.includes(amenityId)
@@ -84,7 +132,10 @@ const HostListingPage = () => {
     }));
   };
 
-  const adjustGuestCount = (field, delta) => {
+  const adjustGuestCount = (
+    field: "bedrooms" | "bathrooms" | "maxGuests",
+    delta: number
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: Math.max(1, prev[field] + delta),
@@ -134,7 +185,11 @@ const HostListingPage = () => {
     </div>
   );
 
-  const PropertyTypeCard = ({ type, isSelected, onClick }) => {
+  const PropertyTypeCard: React.FC<PropertyTypeCardProps> = ({
+    type,
+    isSelected,
+    onClick,
+  }) => {
     const Icon = type.icon;
     return (
       <Card
@@ -161,7 +216,11 @@ const HostListingPage = () => {
     );
   };
 
-  const AmenityCard = ({ amenity, isSelected, onClick }) => {
+  const AmenityCard: React.FC<AmenityCardProps> = ({
+    amenity,
+    isSelected,
+    onClick,
+  }) => {
     const Icon = amenity.icon;
     return (
       <Card
@@ -206,7 +265,7 @@ const HostListingPage = () => {
                 Tell us about your place
               </h2>
               <p className="text-gray-600 text-lg">
-                Let's start with the basics
+                Let&apos;s start with the basics
               </p>
             </div>
 
@@ -265,7 +324,7 @@ const HostListingPage = () => {
                 </label>
                 <textarea
                   className="w-full p-4 border border-gray-200 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all resize-none"
-                  rows="4"
+                  rows={4}
                   placeholder="Describe your property and what makes it special..."
                   value={formData.description}
                   onChange={(e) =>
@@ -478,7 +537,7 @@ const HostListingPage = () => {
                 </label>
                 <textarea
                   className="w-full p-4 border border-gray-200 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all resize-none"
-                  rows="4"
+                  rows={4}
                   placeholder="No smoking, No pets, Quiet hours after 10 PM..."
                   value={formData.houseRules}
                   onChange={(e) =>
@@ -573,7 +632,10 @@ const HostListingPage = () => {
                     placeholder="10"
                     value={formData.weeklyDiscount}
                     onChange={(e) =>
-                      handleInputChange("weeklyDiscount", e.target.value)
+                      handleInputChange(
+                        "weeklyDiscount",
+                        Number(e.target.value)
+                      )
                     }
                     className="h-12"
                   />
@@ -589,7 +651,10 @@ const HostListingPage = () => {
                     placeholder="20"
                     value={formData.monthlyDiscount}
                     onChange={(e) =>
-                      handleInputChange("monthlyDiscount", e.target.value)
+                      handleInputChange(
+                        "monthlyDiscount",
+                        Number(e.target.value)
+                      )
                     }
                     className="h-12"
                   />
@@ -705,7 +770,7 @@ const HostListingPage = () => {
               </div>
               <h3 className="font-semibold text-gray-900">24/7 Support</h3>
               <p className="text-sm text-gray-600">
-                We're here to help anytime
+                We&apos;re here to help anytime
               </p>
             </div>
           </div>
