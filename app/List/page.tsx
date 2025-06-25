@@ -698,7 +698,7 @@ const HostListingPage = () => {
             Become a Host
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            List your space on <span className="text-orange-500">My BnB</span>
+            List your space on <span className="text-orange-400">BnB</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Join thousands of hosts earning extra income by sharing their space
