@@ -29,6 +29,7 @@ import {
   Minus,
   Check,
 } from "lucide-react";
+import { Footer } from "@/components/footer";
 
 interface PropertyType {
   value: string;
@@ -778,6 +779,7 @@ const HostListingPage = () => {
           </div>
         </div>
       </div>
+      <Footer />;
     </div>
   );
 };
