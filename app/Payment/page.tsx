@@ -303,7 +303,7 @@ You will receive a confirmation email shortly.`);
                       value={formData.cardNumber}
                       onChange={handleCardNumberChange}
                       placeholder="1234 5678 9012 3456"
-                      maxLength="19"
+                      maxLength={19}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                       required
                     />
