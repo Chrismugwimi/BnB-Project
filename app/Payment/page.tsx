@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { Header } from "@/components/Header/page";
 
 export default function PaymentPage() {
   const [paymentMethod, setPaymentMethod] = useState("mpesa");
@@ -54,7 +55,9 @@ export default function PaymentPage() {
     },
   ];
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -62,7 +65,7 @@ export default function PaymentPage() {
     }));
   };
 
-  const formatCardNumber = (value) => {
+  const formatCardNumber = (value: string) => {
     const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
     const matches = v.match(/\d{4,16}/g);
     const match = (matches && matches[0]) || "";
@@ -77,7 +80,7 @@ export default function PaymentPage() {
     }
   };
 
-  const handleCardNumberChange = (e) => {
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCardNumber(e.target.value);
     setFormData((prev) => ({
       ...prev,
@@ -85,7 +88,7 @@ export default function PaymentPage() {
     }));
   };
 
-  const handleExpiryChange = (e) => {
+  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length >= 2) {
       value = value.substring(0, 2) + "/" + value.substring(2, 4);
@@ -96,7 +99,7 @@ export default function PaymentPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsProcessing(true);
 
@@ -113,14 +116,14 @@ Dates: ${bookingDetails.checkinDate} to ${bookingDetails.checkoutDate}
 Total: KSh ${bookingDetails.total.toLocaleString()}
 
 You will receive a confirmation email shortly.`);
-    } catch (error) {
+    } catch {
       alert("Payment failed. Please try again or contact support.");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       weekday: "short",
       year: "numeric",
@@ -132,32 +135,7 @@ You will receive a confirmation email shortly.`);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-blue-800 py-5 mb-10">
-        <div className="max-w-6xl mx-auto px-5 flex items-center justify-between">
-          <Link href="/" className="flex items-center text-white no-underline">
-            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 text-white text-xl">
-              🏠
-            </div>
-            <span className="text-2xl font-bold">
-              My<span className="text-orange-500"> Bnb</span>
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-white/80">
-              <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs">
-                ✓
-              </span>
-              <span className="text-sm">Booking Details</span>
-            </div>
-            <div className="flex items-center gap-2 text-white">
-              <span className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs">
-                2
-              </span>
-              <span className="text-sm font-semibold">Payment</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="max-w-6xl mx-auto px-5">
         <div className="grid lg:grid-cols-[1fr_400px] gap-10 items-start">
@@ -323,7 +301,7 @@ You will receive a confirmation email shortly.`);
                         value={formData.expiryDate}
                         onChange={handleExpiryChange}
                         placeholder="MM/YY"
-                        maxLength="5"
+                        maxLength={5}
                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                         required
                       />
@@ -342,7 +320,7 @@ You will receive a confirmation email shortly.`);
                         value={formData.cvv}
                         onChange={handleInputChange}
                         placeholder="123"
-                        maxLength="4"
+                        maxLength={4}
                         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                         required
                       />
