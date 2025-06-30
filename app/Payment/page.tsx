@@ -258,8 +258,8 @@ You will receive a confirmation email shortly.`);
                         </p>
                         <ol className="list-decimal list-inside space-y-1 text-blue-700">
                           <li>Enter your M-Pesa registered phone number</li>
-                          <li>Click "Pay Now" to initiate payment</li>
-                          <li>You'll receive an STK push notification</li>
+                          <li>Click &quot;Pay Now&quot; to initiate payment</li>
+                          <li>You&apos;ll receive an STK push notification</li>
                           <li>Enter your M-Pesa PIN to complete payment</li>
                         </ol>
                       </div>
