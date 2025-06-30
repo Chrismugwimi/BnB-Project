@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Header } from "@/components/Header/page";
 
 export default function BookingPage() {
   const [checkinDate, setCheckinDate] = useState("");
@@ -117,18 +118,7 @@ export default function BookingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-blue-800 py-5 mb-10">
-        <div className="max-w-6xl mx-auto px-5 flex items-center justify-between">
-          <Link href="/" className="flex items-center text-white no-underline">
-            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 text-white text-xl">
-              🏠
-            </div>
-            <span className="text-2xl font-bold">
-              My<span className="text-orange-500"> Bnb</span>
-            </span>
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-5">
