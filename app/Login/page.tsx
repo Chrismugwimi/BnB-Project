@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, ArrowLeft, Mail, Phone } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Mail, Phone, Home } from "lucide-react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -119,16 +119,14 @@ export default function LoginPage() {
           Back
         </Link>
         {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <Link href="/" className="flex items-center">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-              <span className="text-white font-bold text-xl">M</span>
-            </div>
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-              My BnB
-            </span>
-          </Link>
-        </div>
+        <Link href="/" className="flex items-center group">
+          <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
+            <Home className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-2xl font-bold text-white">
+            My<span className="text-orange-500"> Bnb</span>
+          </span>
+        </Link>
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">Welcome,</h2>
           <p className="mt-2 text-sm text-gray-600">
