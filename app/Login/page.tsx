@@ -123,7 +123,7 @@ export default function LoginPage() {
           <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center mr-3 group-hover:bg-orange-600 transition-colors">
             <Home className="w-5 h-5 text-white" />
           </div>
-          <span className="text-2xl font-bold text-white">
+          <span className="text-2xl font-bold text-blue-600">
             My<span className="text-orange-500"> Bnb</span>
           </span>
         </Link>
