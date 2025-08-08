@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { LucideProps } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,8 @@ import {
   Plus,
   Minus,
   Check,
+  X,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Footer } from "@/components/footer";
 
@@ -95,6 +97,8 @@ const HostListingPage = () => {
   });
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const totalSteps = 4;
 
   const propertyTypes: PropertyType[] = [
@@ -123,6 +127,89 @@ const HostListingPage = () => {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles = Array.from(files);
+    const validFiles = newFiles.filter((file) => {
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        alert(`${file.name} is not an image file`);
+        return false;
+      }
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`${file.name} is too large. Please choose files under 5MB.`);
+        return false;
+      }
+      return true;
+    });
+
+    // Limit total images to 10
+    const currentImageCount = formData.images.length;
+    const maxNewFiles = Math.max(0, 10 - currentImageCount);
+    const filesToAdd = validFiles.slice(0, maxNewFiles);
+
+    if (validFiles.length > maxNewFiles) {
+      alert(
+        `You can only upload up to 10 images. ${
+          validFiles.length - maxNewFiles
+        } files were not added.`
+      );
+    }
+
+    // Update form data
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...filesToAdd],
+    }));
+
+    // Create previews for new files
+    filesToAdd.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setImagePreviews((prev) => [...prev, e.target!.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset the input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+
+    // Create a synthetic event to reuse the existing handleFileChange logic
+    const syntheticEvent = {
+      target: { files: files },
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
+
+    handleFileChange(syntheticEvent);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   const handleAmenityToggle = (amenityId: string) => {
@@ -156,11 +243,90 @@ const HostListingPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    // Handle form submission here
-    alert("Listing submitted successfully!");
+  // Add this state to your component
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Replace your existing handleSubmit function with this:
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+
+    try {
+      // Create FormData object
+      const submitFormData = new FormData();
+
+      // Append text fields
+      submitFormData.append("title", formData.title);
+      submitFormData.append("description", formData.description);
+      submitFormData.append("propertyType", formData.propertyType);
+      submitFormData.append("location", formData.location);
+      submitFormData.append("bedrooms", formData.bedrooms.toString());
+      submitFormData.append("bathrooms", formData.bathrooms.toString());
+      submitFormData.append("maxGuests", formData.maxGuests.toString());
+      submitFormData.append("pricePerNight", formData.pricePerNight);
+      submitFormData.append(
+        "weeklyDiscount",
+        formData.weeklyDiscount.toString()
+      );
+      submitFormData.append(
+        "monthlyDiscount",
+        formData.monthlyDiscount.toString()
+      );
+
+      if (formData.cleaningFee) {
+        submitFormData.append("cleaningFee", formData.cleaningFee);
+      }
+      if (formData.houseRules) {
+        submitFormData.append("houseRules", formData.houseRules);
+      }
+      if (formData.checkInTime) {
+        submitFormData.append("checkInTime", formData.checkInTime);
+      }
+      if (formData.checkOutTime) {
+        submitFormData.append("checkOutTime", formData.checkOutTime);
+      }
+
+      // Append amenities as JSON string
+      submitFormData.append("amenities", JSON.stringify(formData.amenities));
+
+      // Append image files
+      formData.images.forEach((image) => {
+        submitFormData.append("images", image);
+      });
+
+      // Submit to API
+      const response = await fetch("/api/properties", {
+        method: "POST",
+        body: submitFormData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Listing submitted successfully!");
+        console.log("Created property:", result.property);
+
+        // Reset form or redirect to success page
+        // router.push('/host/success');
+      } else {
+        alert(`Error: ${result.message}`);
+        console.error("Submission error:", result.error);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to submit listing. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  // Also update your submit button to show loading state:
+  <Button
+    onClick={handleSubmit}
+    disabled={isSubmitting}
+    className="bg-orange-500 hover:bg-orange-600 px-8 disabled:bg-gray-300 disabled:cursor-not-allowed"
+  >
+    {isSubmitting ? "Publishing..." : "Publish Listing"}
+  </Button>;
 
   const StepIndicator = () => (
     <div className="flex items-center justify-center mb-8">
@@ -264,7 +430,7 @@ const HostListingPage = () => {
                 <Home className="w-10 h-10 text-orange-500" />
               </div>
               <h2 className="text-3xl font-bold text-gray-900">
-                Tell us about your place
+                Tell us about your BnB
               </h2>
               <p className="text-gray-600 text-lg">
                 Let&apos;s start with the basics
@@ -476,7 +642,27 @@ const HostListingPage = () => {
               </p>
             </div>
 
-            <Card className="border-2 border-dashed border-gray-300 hover:border-orange-500 transition-colors">
+            {/* File Input (Hidden) */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+
+            {/* Upload Area */}
+            <Card
+              className={`border-2 border-dashed transition-colors cursor-pointer ${
+                formData.images.length === 0
+                  ? "border-gray-300 hover:border-orange-500"
+                  : "border-orange-200"
+              }`}
+              onClick={handleFileSelect}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
               <CardContent className="p-12 text-center">
                 <div className="space-y-4">
                   <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto">
@@ -489,17 +675,109 @@ const HostListingPage = () => {
                     <p className="text-gray-600 mb-4">
                       Drag and drop your images here, or click to browse
                     </p>
-                    <Button className="bg-orange-500 hover:bg-orange-600">
+                    <Button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFileSelect();
+                      }}
+                      className="bg-orange-500 hover:bg-orange-600"
+                    >
                       Choose Photos
                     </Button>
                   </div>
                   <p className="text-sm text-gray-500">
-                    Upload at least 5 high-quality photos. First photo will be
-                    your cover image.
+                    Upload at least 5 high-quality photos (max 10). First photo
+                    will be your cover image.
                   </p>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Image Preview Grid */}
+            {formData.images.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Photos ({formData.images.length}/10)
+                  </h3>
+                  <Button
+                    variant="outline"
+                    onClick={handleFileSelect}
+                    disabled={formData.images.length >= 10}
+                    className="text-sm"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add More
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="relative group">
+                      <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                        <img
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Cover Image Badge */}
+                      {index === 0 && (
+                        <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
+                          Cover
+                        </Badge>
+                      )}
+
+                      {/* Remove Button */}
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-2 right-2 w-8 h-8 p-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+
+                      {/* Image Info */}
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <div className="bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                          {formData.images[index].name.length > 20
+                            ? formData.images[index].name.substring(0, 20) +
+                              "..."
+                            : formData.images[index].name}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Add More Button (when less than 10 images) */}
+                  {formData.images.length < 10 && (
+                    <div
+                      onClick={handleFileSelect}
+                      className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-500 flex flex-col items-center justify-center cursor-pointer transition-colors bg-gray-50 hover:bg-orange-50"
+                    >
+                      <Plus className="w-8 h-8 text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-500">Add Photo</span>
+                    </div>
+                  )}
+                </div>
+
+                {formData.images.length < 5 && (
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-center text-amber-800">
+                      <ImageIcon className="w-5 h-5 mr-2" />
+                      <span className="text-sm">
+                        Add at least {5 - formData.images.length} more photo
+                        {5 - formData.images.length !== 1 ? "s" : ""} to
+                        continue
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
@@ -729,7 +1007,8 @@ const HostListingPage = () => {
                 {currentStep < totalSteps ? (
                   <Button
                     onClick={nextStep}
-                    className="bg-orange-500 hover:bg-orange-600 px-8"
+                    disabled={currentStep === 3 && formData.images.length < 5}
+                    className="bg-orange-500 hover:bg-orange-600 px-8 disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
                     Next Step
                   </Button>
@@ -779,7 +1058,7 @@ const HostListingPage = () => {
           </div>
         </div>
       </div>
-      <Footer />;
+      <Footer />
     </div>
   );
 };

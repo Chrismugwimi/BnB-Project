@@ -36,7 +36,7 @@ interface Property {
 }
 
 export default async function Page() {
-  // Explicitly type the arrays
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const featuredProperties: Property[] = [];
   const mombasaProperties: Property[] = [];
   const nakuruProperties: Property[] = [];
@@ -153,9 +153,7 @@ export default async function Page() {
             <div className="flex flex-wrap justify-center gap-12 pt-8 text-center">
               <div>
                 <div className="text-3xl font-bold text-gray-900">500+</div>
-                <div className="text-sm text-gray-600 font-medium">
-                  Properties
-                </div>
+                <div className="text-sm text-gray-600 font-medium">BnBs</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-gray-900">100+</div>
@@ -244,17 +242,17 @@ export default async function Page() {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Coastal escapes in Mombasa
+                BnBs in Mombasa
               </h2>
               <p className="text-gray-600">
-                Beachfront properties with stunning ocean views
+                Beachfront BnBs with stunning ocean views
               </p>
             </div>
             <Button
               variant="outline"
               className="group border-gray-300 hover:border-orange-500 hover:text-orange-500"
             >
-              View all properties
+              View all BnBs
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -277,17 +275,17 @@ export default async function Page() {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Weekend getaways in Nakuru
+                BnBs in Nakuru
               </h2>
               <p className="text-gray-600">
-                Perfect retreats available for this weekend
+                Perfect homes available for this weekend
               </p>
             </div>
             <Button
               variant="outline"
               className="group border-blue-950 text-white hover:border-orange-500 hover:text-orange-500"
             >
-              View all properties
+              View all BnBs
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -323,7 +321,7 @@ export default async function Page() {
                 size="lg"
                 className="bg-white hover:bg-orange-500 hover:text-white text-orange-500 font-semibold px-8 py-4 text-lg"
               >
-                Explore Properties
+                Explore BnBs
               </Button>
               <Button
                 size="lg"

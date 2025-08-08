@@ -58,7 +58,7 @@ model Property {
   location      String
   county        String
   city          String
-  images        String[]
+  images        PropertyImage[]
   bedrooms      Int       @db.SmallInt
   bathrooms     Int       @db.SmallInt
   maxGuests     Int       @db.SmallInt
@@ -76,6 +76,18 @@ model Property {
   reviews       Review[]
 
   @@map("properties")
+}
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String   // URL to the stored image
+  filename   String
+  isCover    Boolean  @default(false)
+  order      Int      @default(0)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  
+  @@map("property_images")
 }
 
 model Booking {
