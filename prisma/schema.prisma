@@ -8,23 +8,21 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   phone         String?
   emailVerified DateTime?
   image         String?
   password      String?
-  role          Role      @default(GUEST)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
+  role          Role       @default(GUEST)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   accounts      Account[]
-  properties    Property[]
   bookings      Booking[]
-  reviews       Review[]
   messages      Message[]
+  properties    Property[]
+  reviews       Review[]
 
   @@map("users")
 }
@@ -35,14 +33,13 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-  
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -50,82 +47,74 @@ model Account {
 }
 
 model Property {
-  id            String    @id @default(cuid())
-  title         String
-  description   String    @db.Text
-  price         Decimal   @db.Decimal(10, 2)
-  currency      String    @default("KES")
-  location      String
-  county        String
-  city          String
-  images        PropertyImage[]
-  bedrooms      Int       @db.SmallInt
-  bathrooms     Int       @db.SmallInt
-  maxGuests     Int       @db.SmallInt
-  latitude      Float?
-  longitude     Float?
-  amenities     String[]
-  isActive      Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  hostId        String
-  host          User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
-  bookings      Booking[]
-  reviews       Review[]
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  price       Decimal   @db.Decimal(10, 2)
+  currency    String    @default("KES")
+  location    String
+  county      String
+  images      Image[]
+  bedrooms    Int       @db.SmallInt
+  bathrooms   Int       @db.SmallInt
+  city        String
+  maxGuests   Int       @db.SmallInt
+  latitude    Float?
+  longitude   Float?
+  amenities   String[]
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  hostId      String
+  bookings    Booking[]
+  host        User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  reviews     Review[]
 
   @@map("properties")
 }
-model PropertyImage {
+
+model Image {
   id         String   @id @default(cuid())
-  url        String   // URL to the stored image
   filename   String
+  url        String
   isCover    Boolean  @default(false)
-  order      Int      @default(0)
-  propertyId String
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  
-  @@map("property_images")
+  order      Int
+  propertyId String   // Foreign key
+  property   Property @relation(fields: [propertyId], references: [id])
+  // other fields...
 }
 
 model Booking {
-  id            String           @id @default(cuid())
-  checkIn       DateTime
-  checkOut      DateTime
-  guests        Int           @db.SmallInt
-  totalPrice    Decimal       @db.Decimal(10, 2)
-  currency      String        @default("KES")
-  status        BookingStatus @default(PENDING)
-  payment       Payment?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id         String        @id @default(cuid())
+  checkIn    DateTime
+  checkOut   DateTime
+  guests     Int           @db.SmallInt
+  totalPrice Decimal       @db.Decimal(10, 2)
+  currency   String        @default("KES")
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  propertyId String
+  userId     String
+  payment    Payment?
+  property   Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  guest      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages   Message[]
 
-  // Relations
-  propertyId    String
-  property      Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  userId        String
-  guest         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages      Message[]
-
-  // Prevent double booking
   @@unique([propertyId, checkIn, checkOut])
   @@map("bookings")
 }
 
 model Review {
-  id          String   @id @default(cuid())
-  rating      Int      @db.SmallInt // 1-5 rating
-  comment     String?  @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  propertyId  String
-  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  reviewerId  String
-  reviewer    User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  rating     Int      @db.SmallInt
+  comment    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  propertyId String
+  reviewerId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  reviewer   User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
 
   @@unique([propertyId, reviewerId])
   @@map("reviews")
@@ -133,31 +122,28 @@ model Review {
 
 model Message {
   id        String   @id @default(cuid())
-  content   String   @db.Text
-  isRead    Boolean  @default(false)
+  content   String
   createdAt DateTime @default(now())
-
-  // Relations
   senderId  String
-  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
   bookingId String
+  isRead    Boolean  @default(false)
   booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
 
 model Payment {
-  id         Int      @id @default(autoincrement())
-  amount     Float
-  method     String   // e.g., 'Mpesa', 'Card', 'Cash'
-  status     String   // e.g., 'Paid', 'Pending', 'Failed'
-  timestamp  DateTime @default(now())
-  bookingId  String      @unique
-  booking    Booking  @relation(fields: [bookingId], references: [id])
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  method    String
+  status    String
+  timestamp DateTime @default(now())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id])
 
   @@index([bookingId])
 }
-
 
 enum Role {
   GUEST

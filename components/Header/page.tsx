@@ -46,7 +46,7 @@ export function Header() {
           {/* Right Menu */}
           <div className="flex items-center space-x-4">
             <Link
-              href="/list"
+              href="/List"
               className="text-sm font-medium text-white hover:text-orange-500 hidden sm:block transition-colors"
             >
               List my Bnb
